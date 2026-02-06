@@ -1251,14 +1251,12 @@ class LPGBT(RegParser):
         OFFSET_RD = i2cm*(i2cm1status - i2cm0status)
 
         adr_bytes = [ ((reg >> (8*i)) & 0xff) for i in range(adr_nbytes) ]
-
-        if type(val == int):
+        if type(val) == int:
             data_bytes = [val]
-        elif type(val == list):
+        elif type(val) == list:
             data_bytes = val
         else:
             raise RuntimeError("Data must be an int or list of ints")
-
         nbytes = len(adr_bytes+data_bytes)
 
         self.wr_adr(
@@ -1269,11 +1267,10 @@ class LPGBT(RegParser):
             i2cm0cmd+OFFSET_WR,
             self.LPGBT_CONST.I2CM_WRITE_CRA,
         )
-
         for i, data_byte in enumerate(adr_bytes+data_bytes):
             page    = int(i/4)
             offset  = int(i%4)
-
+            
             self.wr_adr(
                 i2cm0data0 + OFFSET_WR + offset,
                 data_byte

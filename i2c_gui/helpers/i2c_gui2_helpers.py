@@ -11,16 +11,18 @@ from pathlib import Path
 from tqdm import tqdm
 
 # --------------------------- NEW ----------------------------
-class LpGBT_I2C_Controller:
+class LpGBT_I2C_Controller(i2c_gui2.i2c_connection_helper.I2C_Connection_Helper):
     """
     minimal object to satisfy i2c_gui2 Base_Chip expectations, while using rb.DAQ_LPGBT
     down in Address_Space_Controller for actual I2C transactions instead of USB-ISS
     """
-    def __init__(self, rb=None, lpgbt=None, connected=True):
+    def __init__(self, rb=None, lpgbt=None, connected=True, max_seq_byte=8, dummy_connect=False):
+        super().__init__(max_seq_byte=max_seq_byte, no_connect=dummy_connect)
         self.rb = rb
         self.lpgbt = lpgbt if lpgbt is not None else (rb.DAQ_LPGBT if rb is not None else None)
-        self._connected = connected
+        self._is_connected = connected
         self._callbacks = []
+
 
     def register_connection_callback(self, cb):
         self._callbacks.append(cb)
@@ -28,13 +30,55 @@ class LpGBT_I2C_Controller:
         cb(self._connected)
 
     def set_connected(self, connected: bool):
-        self._connected = connected
+        self._is_connected = connected
         for cb in self._callbacks:
-            cb(self._connected)
+            cb(self._is_connected)
 
     @property
     def connected(self):
-        return self._connected
+        return self._is_connected
+
+    def _read_i2c_device_memory(
+        self,
+        device_address: int,
+        word_address: int,
+        byte_count: int,
+        read_type: str = 'Normal',
+        address_bitlength: int = 8,
+    ) -> list[int]:
+        word_address = word_address << 8 | word_address >> 8
+        result = []
+        for offset in range(byte_count):
+            raw = self.lpgbt.I2C_read(
+                reg=word_address + offset,
+                slave_addr=device_address,
+                nbytes=1,  # Read one byte at a time
+                adr_nbytes=2,
+                master=1,
+                freq=2,
+            )
+            result.append(raw)
+        return result
+
+    def _write_i2c_device_memory(
+        self,
+        device_address: int,
+        word_address: int,
+        byte_data: list[int],
+        write_type: str = 'Normal',
+        address_bitlength: int = 8,
+    ):        
+        word_address = word_address << 8 | word_address >> 8
+        for i, byte in enumerate(byte_data):
+            self.lpgbt.I2C_write(
+                reg=word_address+i,
+                val=byte,
+                slave_addr=device_address,
+                adr_nbytes=2,
+                master=1,
+                freq=2,
+            )
+
 # --------------------------- NEW END ------------------------
 
 
