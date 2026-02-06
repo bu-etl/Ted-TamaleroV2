@@ -1,0 +1,20 @@
+[satellites.ETROC2Waveform]
+
+[satellites.ETROC2Waveform.One]
+fast_command_memo = "Start Triggerbit"
+polarity = 0x4123
+triggerbit_delay = 0x1de6
+active_channel = 0x1
+timestamp = 0x10
+ws_active_channel = 0x0081
+
+save_html = 0
+
+fc_delays = 0b0000000010101010
+
+i2c_port = "/dev/ttyACM0"
+chip_addresses = [0x60]
+ws_addresses = [0x40]
+chip_names = ["ET2p01HPKNH5"]
+
+output_path = "/home/daq/ETROC2/ETROC-Data/DESY_May2025/WS_beam"

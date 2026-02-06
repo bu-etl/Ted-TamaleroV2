@@ -1,0 +1,16 @@
+[satellites.ETROC2Classic]
+
+[satellites.ETROC2Classic.One]
+fast_command_memo = "Start QInj L1A Triggerbit BCR"
+polarity = 0x4023
+active_channel = 0xf
+timestamp = 0xc
+triggerbit_delay = 0x1800
+
+[satellites.ETROC2Receiver]
+
+[satellites.ETROC2Receiver.One]
+output_path = "/home/daq/ETROC2/ETROC-Data/DESYMar2025/comm"
+translate = 1
+compressed_binary = 0
+skip_fillers = 1

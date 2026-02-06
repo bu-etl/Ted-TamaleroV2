@@ -1,0 +1,66 @@
+ignore_list: ["ttyS", "ttyUSB", "TCPIP"]
+power_supplies:
+    Power_1_DIG:
+        manufacturer: "THURLBY-THANDAR"
+        model: "TSX3510P"
+        serial: "495222"
+        resource: "ASRL/dev/ttyACM2::INSTR"
+        channels:
+            Digital:
+                channel: 1
+                Vset: 1.25
+                Ilimit: 0.50
+    Power_1_ANA:
+        manufacturer: "THURLBY-THANDAR"
+        model: "TSX3510P"
+        serial: "495226"
+        resource: "ASRL/dev/ttyACM3::INSTR"
+        channels:
+            Digital:
+                channel: 1
+                Vset: 1.38
+                Ilimit: 0.70
+    Power_2:
+        manufacturer: "THURLBY-THANDAR"
+        model: "PL330DP"
+        serial: "0"
+        resource: "GPIB0::3::INSTR"
+        channels:
+            Digital:
+                channel: 2
+                Vset: 1.28
+                Ilimit: 0.50
+            Analog:
+                channel: 1
+                Vset: 1.38
+                Ilimit: 0.70
+    Power_3:
+        manufacturer: "THURLBY-THANDAR"
+        model: "PL330DP"
+        serial: "0"
+        resource: "GPIB0::24::INSTR"
+        channels:
+            Digital:
+                channel: 2
+                Vset: 1.26
+                Ilimit: 0.50
+            Analog:
+                channel: 1
+                Vset: 1.38
+                Ilimit: 0.70
+    Power_4:
+        manufacturer: "THURLBY THANDAR"
+        model: "PL303QMD-P"
+        serial: "410453"
+        resource: "ASRL/dev/ttyACM4::INSTR"
+        channels:
+            Digital:
+                channel: 1
+                Vset: 1.31
+                Ilimit: 0.50
+                IRange: "High"
+            Analog:
+                channel: 2
+                Vset: 1.46
+                Ilimit: 0.75
+                IRange: "High"

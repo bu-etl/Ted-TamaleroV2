@@ -1,0 +1,16 @@
+[satellites.ETROC2Classic]
+
+[satellites.ETROC2Classic.one]
+fast_command_memo = "Start QInj Triggerbit BCR L1A"
+polarity = 0x4023
+triggerbit_delay = 0x1800
+timestamp = 0x0000
+active_channel = 0x1
+
+[satellites.ETROC2Receiver]
+
+[satellites.ETROC2Receiver.one]
+output_path = "/home/daq/ETROC2/ETROC-Data/Wafer_Probe_Mar2025"
+translate = 1
+compressed_binary = 0
+skip_fillers = 1

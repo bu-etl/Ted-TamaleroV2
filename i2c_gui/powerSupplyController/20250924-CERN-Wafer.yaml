@@ -1,0 +1,50 @@
+ignore_list: ["ttyS", "TCPIP", "ttyU", "/dev/gpib0", "ttyACM4"]
+power_supplies:
+    WS_power:
+        manufacturer: "THURLBY THANDAR"
+        model: "PL303QMD-P"
+        serial: "452591"
+        resource: "ASRL/dev/ttyACM0::INSTR"
+        channels:
+            ws_analog:
+                channel: 1
+                Vset: 1.22
+                Ilimit: 0.10
+                turn_on: True
+            ws_digital:
+                channel: 2
+                Vset: 1.21
+                Ilimit: 0.10
+                turn_on: True
+    Main_power:
+        manufacturer: "THURLBY THANDAR"
+        model: "PL303QMD-P"
+        serial: "540334"
+        resource: "ASRL/dev/ttyACM2::INSTR"
+        channels:
+            analog:
+                channel: 1
+                Vset: 1.36
+                Ilimit: 0.70
+                turn_on: True
+            digital:
+                channel: 2
+                Vset: 1.25
+                Ilimit: 0.30
+                turn_on: True
+    Aux:
+        manufacturer: "THURLBY THANDAR"
+        model: "PL303QMD-P"
+        serial: "565105"
+        resource: "ASRL/dev/ttyACM3::INSTR"
+        channels:
+            efuse:
+                channel: 1
+                Vset: 2.5
+                Ilimit: 0.10
+                turn_on: False
+            vref:
+                channel: 2
+                Vset: 1.0
+                Ilimit: 0.10
+                turn_on: True

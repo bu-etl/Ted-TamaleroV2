@@ -1,0 +1,42 @@
+ignore_list: ["ttyS", "ttyUSB", "ttyACM"]
+power_supplies:
+    Power_HV_1:
+        manufacturer: "KEITHLEY INSTRUMENTS"
+        model: "MODEL 2470"
+        serial: "04641700"
+        resource: "TCPIP::192.168.200.140::INSTR"
+        channels:
+            HV_1:
+                channel: 1
+                Vset: -260
+                Ilimit: 100E-6
+    Power_HV_2:
+        manufacturer: "KEITHLEY INSTRUMENTS"
+        model: "MODEL 2470"
+        serial: "04644460"
+        resource: "TCPIP::192.168.200.130::INSTR"
+        channels:
+            HV_2:
+                channel: 1
+                Vset: -120
+                Ilimit: 100E-6
+    Power_HV_3:
+        manufacturer: "KEITHLEY INSTRUMENTS"
+        model: "MODEL 2470"
+        serial: "04623088"
+        resource: "TCPIP::192.168.200.120::INSTR"
+        channels:
+            HV_3:
+                channel: 1
+                Vset: -120
+                Ilimit: 100E-6
+    Power_HV_4:
+        manufacturer: "KEITHLEY INSTRUMENTS"
+        model: "MODEL 2470"
+        serial: "04448012"
+        resource: "TCPIP::192.168.200.110::INSTR"
+        channels:
+            HV_4:
+                channel: 1
+                Vset: -180
+                Ilimit: 100E-6
