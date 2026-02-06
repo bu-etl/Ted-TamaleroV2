@@ -1,0 +1,15 @@
+usb-iss
+pillow
+matplotlib
+boost-histogram
+click
+hist
+histoprint
+mplhep
+mplhep-data
+pandas
+pytz
+tqdm
+typing-extensions
+tzdata
+uhi
