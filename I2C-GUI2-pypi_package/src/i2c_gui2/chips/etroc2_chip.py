@@ -1658,6 +1658,8 @@ class ETROC2_Chip(Base_Chip):
         waveform_sampler_i2c_address,
         i2c_connection: I2C_Connection_Helper,
         logger: logging.Logger,
+        rb=None,
+        lpgbt=None
     ):
         super().__init__(
             chip_name="ETROC2",
@@ -1667,6 +1669,8 @@ class ETROC2_Chip(Base_Chip):
             register_model=register_model,
             register_decoding=register_decoding,
             indexer_info=self._indexer_info,
+            rb=rb,
+            lpgbt=lpgbt
         )
         print("PYTHON PACKAGE: ETROC2_Chip object instantiated")
         self._etroc2_i2c_address = etroc2_i2c_address
@@ -1735,6 +1739,7 @@ class ETROC2_Chip(Base_Chip):
     # because the broadcast feature would overwrite previous addresses, so we write in blocks
     # since they do not cover the broadcast range
     def write_all_address_space(self, address_space_name: str, readback_check: bool = True, no_message: bool = True):
+        # TODO: Not seen?
         print("PYTHON PACKAGE: write_all_address_space method in ETROC2_Chip object")
         if address_space_name == "ETROC2":
             if not no_message:
@@ -1751,7 +1756,8 @@ class ETROC2_Chip(Base_Chip):
     def write_all_block(
         self, address_space_name: str, block_name: str, full_array: bool = False, readback_check: bool = True, no_message: bool = True
     ):
-        print("PYTHON PACKAGE: write_all_block method in ETROC2_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_all_block method in ETROC2_Chip object")
         if (
             address_space_name == "ETROC2"
             and "Indexer" in self._register_model[address_space_name]["Register Blocks"][block_name]
@@ -1807,7 +1813,8 @@ class ETROC2_Chip(Base_Chip):
 
     #  We need to overload the write register method so that we intercept the call for the broadcast feature
     def write_register(self, address_space_name: str, block_name: str, register: str, readback_check: bool = True, no_message: bool = True):
-        print("PYTHON PACKAGE: write_register method in ETROC2_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_register method in ETROC2_Chip object")
         if (
             address_space_name == "ETROC2"
             and "Indexer" in self._register_model[address_space_name]["Register Blocks"][block_name]
@@ -1864,7 +1871,8 @@ class ETROC2_Chip(Base_Chip):
     def write_decoded_value(
         self, address_space_name: str, block_name: str, decoded_value_name: str, write_check: bool = True, no_message: bool = False
     ):
-        print("PYTHON PACKAGE: write_decoded_value method in ETROC2_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_decoded_value method in ETROC2_Chip object")
         if (
             address_space_name == "ETROC2"
             and "Indexer" in self._register_model[address_space_name]["Register Blocks"][block_name]
@@ -1885,6 +1893,7 @@ class ETROC2_Chip(Base_Chip):
             )
 
     def write_all_efficient(self, readback_check: bool = True):
+        # TODO: Not seen?
         print("PYTHON PACKAGE: write_all_efficient method in ETROC2_Chip object")
         """This write function will only write the named register addresses in the ETROC2 manual.
         There are many addresses which are not named and as a result are not written. In principle,
@@ -1910,6 +1919,7 @@ class ETROC2_Chip(Base_Chip):
                 #    address_space.write_memory_block(0x0120, 4)
 
     def read_all_efficient(self):
+        # TODO: Not seen?
         print("PYTHON PACKAGE: read_all_efficient method in ETROC2_Chip object")
         """This read function will only read the named register addresses in the ETROC2 manual.
         There are many addresses which are not named and as a result are not read. In principle,

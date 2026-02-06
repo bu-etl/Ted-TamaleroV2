@@ -43,6 +43,8 @@ class Base_Chip:
         register_model=None,
         register_decoding=None,
         indexer_info=None,
+        rb=None,
+        lpgbt=None
     ):
         print("PYTHON PACKAGE: Base_Chip object instantiated")
         self._id = next(Base_Chip.newid)
@@ -60,6 +62,9 @@ class Base_Chip:
 
         self._enable_readback = True
 
+        self._lpgbt = lpgbt
+        self._rb = rb
+
         self._indexer_vars = {}
         if indexer_info is not None:
             self._build_indexer_vars(indexer_info)
@@ -71,7 +76,8 @@ class Base_Chip:
             self._register_address_space(address_space, None, self._register_model[address_space])  # , decoding)
 
     def __getitem__(self, index):
-        print("PYTHON PACKAGE: __getitem__ method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: __getitem__ method in Base_Chip object")
         address_space_name, block_name, register = index
 
         block_ref, _ = self._gen_block_ref_from_indexers(
@@ -83,7 +89,8 @@ class Base_Chip:
         return self._address_space[address_space_name][block_ref, register]
 
     def __setitem__(self, index, value):
-        print("PYTHON PACKAGE: __setitem__ method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: __setitem__ method in Base_Chip object")
         address_space_name, block_name, register = index
 
         block_ref, _ = self._gen_block_ref_from_indexers(
@@ -271,11 +278,13 @@ class Base_Chip:
         self._indexer_vars[name]['variable'] = value
 
     def read_all(self):
+        # TODO: not seen?
         print("PYTHON PACKAGE: read_all method in Base_Chip object")
         for address_space in self._address_space:
             self.read_all_address_space(address_space)
 
     def write_all(self, readback_check: bool = True):
+        # TODO: not seen?
         print("PYTHON PACKAGE: write_all method in Base_Chip object")
         success = True
         for address_space in self._address_space:
@@ -285,6 +294,7 @@ class Base_Chip:
         return success
 
     def read_all_address_space(self, address_space_name: str, no_message: bool = True):
+        # TODO: not seen?
         print("PYTHON PACKAGE: read_all_address_space method in Base_Chip object")
         if not no_message:
             self._logger.info("Reading full address space: {}".format(address_space_name))
@@ -292,6 +302,7 @@ class Base_Chip:
         address_space.read_all()
 
     def write_all_address_space(self, address_space_name: str, readback_check: bool = True, no_message: bool = True):
+        # TODO: not seen?
         print("PYTHON PACKAGE: write_all_address_space in Base_Chip object")
         if not no_message:
             self._logger.info("Writing full address space: {}".format(address_space_name))
@@ -299,7 +310,8 @@ class Base_Chip:
         return address_space.write_all(readback_check=readback_check)
 
     def read_all_block(self, address_space_name: str, block_name: str, full_array: bool = False, no_message: bool = True):
-        print("PYTHON PACKAGE: read_all_block method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: read_all_block method in Base_Chip object")
         block_ref, _ = self._gen_block_ref_from_indexers(
             address_space_name=address_space_name,
             block_name=block_name,
@@ -314,7 +326,8 @@ class Base_Chip:
     def write_all_block(
         self, address_space_name: str, block_name: str, full_array: bool = False, readback_check: bool = True, no_message: bool = True
     ):
-        print("PYTHON PACKAGE: write_all_block method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_all_block method in Base_Chip object")
         block_ref, _ = self._gen_block_ref_from_indexers(
             address_space_name=address_space_name,
             block_name=block_name,
@@ -327,7 +340,8 @@ class Base_Chip:
         return address_space.write_block(block_ref, readback_check=readback_check)
 
     def read_register(self, address_space_name: str, block_name: str, register: str, no_message: bool = True):
-        print("PYTHON PACKAGE: read_register method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: read_register method in Base_Chip object")
         self._logger.detailed_trace(f'Base_Chip::read_register("{address_space_name}", "{block_name}", "{register}", {no_message})')
         block_ref, _ = self._gen_block_ref_from_indexers(
             address_space_name=address_space_name,
@@ -346,7 +360,8 @@ class Base_Chip:
         address_space.read_register(block_ref, register)
 
     def write_register(self, address_space_name: str, block_name: str, register: str, readback_check: bool = True, no_message: bool = True):
-        print("PYTHON PACKAGE: write_register method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_register method in Base_Chip object")
         self._logger.detailed_trace(
             f'Base_Chip::write_register("{address_space_name}", "{block_name}", "{register}", "{readback_check}", {no_message})'
         )
@@ -366,7 +381,8 @@ class Base_Chip:
         return address_space.write_register(block_ref, register, readback_check=readback_check)
 
     def read_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str, no_message: bool = False):
-        print("PYTHON PACKAGE: read_decoded_value method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: read_decoded_value method in Base_Chip object")
         value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 
         for position in value_info['position']:
@@ -376,7 +392,8 @@ class Base_Chip:
     def write_decoded_value(
         self, address_space_name: str, block_name: str, decoded_value_name: str, write_check: bool = True, no_message: bool = False
     ):
-        print("PYTHON PACKAGE: write_decoded_value method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_decoded_value method in Base_Chip object")
         value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 
         for position in value_info['position']:
@@ -384,7 +401,8 @@ class Base_Chip:
             self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
 
     def get_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str):
-        print("PYTHON PACKAGE: get_decoded_value method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: get_decoded_value method in Base_Chip object")
         self._logger.detailed_trace(f'Base_Chip::get_decoded_value("{address_space_name}", "{block_name}", "{decoded_value_name}")')
         value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 
@@ -414,7 +432,8 @@ class Base_Chip:
         return value
 
     def set_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str, value: int):
-        print("PYTHON PACKAGE: set_decoded_value method in Base_Chip object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: set_decoded_value method in Base_Chip object")
         self._logger.detailed_trace(f'Base_Chip::set_decoded_value("{address_space_name}", "{block_name}", "{decoded_value_name}")')
         value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 

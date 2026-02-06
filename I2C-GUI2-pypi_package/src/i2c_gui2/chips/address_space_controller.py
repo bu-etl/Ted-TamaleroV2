@@ -154,7 +154,8 @@ class Address_Space_Controller:
         return self._address_space_size
 
     def __getitem__(self, index):
-        print("PYTHON PACKAGE: __getitem__ method in Address_Space_Controller")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: __getitem__ method in Address_Space_Controller")
         if isinstance(index, int):
             return self._memory[index]
         elif isinstance(index, tuple):
@@ -164,7 +165,8 @@ class Address_Space_Controller:
             raise RuntimeError("Unknown index for address space controller get")
 
     def __setitem__(self, index, value):
-        print("PYTHON PACKAGE: __setitem__ method in Address_Space_Controller")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: __setitem__ method in Address_Space_Controller")
         if isinstance(index, int):
             self._memory[index] = value
         elif isinstance(index, tuple):
@@ -281,7 +283,8 @@ class Address_Space_Controller:
         return self.read_memory_block(address, 1)
 
     def write_memory_block(self, base_address, word_count, readback_check: bool = True, readback_base_address=None):
-        print("PYTHON PACKAGE: write_memory_block method in Address_Spacer_Controller object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_memory_block method in Address_Spacer_Controller object")
         if self._i2c_address is None:
             self._logger.error(f"Unable to write address space '{self._name}' because the i2c address is not set")
             return False
@@ -375,6 +378,7 @@ class Address_Space_Controller:
         return success
 
     def read_all(self):
+        # TODO: not seen?
         print("PYTHON PACKAGE: read_all method in Address_Space_Controller object")
         if self._i2c_address is None:
             self._logger.error(f"Unable to read address space '{self._name}' because the i2c address is not set")
@@ -386,7 +390,8 @@ class Address_Space_Controller:
             self._not_read = False
 
     def read_block(self, block_name):
-        print("PYTHON PACKAGE: read_block method in Address_Space_Controller object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: read_block method in Address_Space_Controller object")
         if self._i2c_address is None:
             self._logger.error(f"Unable to read address space '{self._name}' because the i2c address is not set")
             return
@@ -397,7 +402,8 @@ class Address_Space_Controller:
         self.read_memory_block(block["Base Address"], block["Length"])
 
     def read_register(self, block_name, register_name):
-        print("PYTHON PACKAGE: read_register method in Address_Space_Controller object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: read_register method in Address_Space_Controller object")
         self._logger.detailed_trace(f'Address_Space_Controller::read_register("{block_name}", "{register_name}")')
         if self._i2c_address is None:
             self._logger.error(f"Unable to read address space '{self._name}' because the i2c address is not set")
@@ -408,6 +414,7 @@ class Address_Space_Controller:
         self.read_memory_block(self._register_map[block_name + "/" + register_name], 1)
 
     def write_all(self, readback_check: bool = True):
+        # TODO: not seen?
         print("PYTHON PACKAGE: write_all method in Address_Space_Controller object")
         if self._i2c_address is None:
             self._logger.error(f"Unable to write address space '{self._name}' because the i2c address is not set")
@@ -423,7 +430,8 @@ class Address_Space_Controller:
         return self.write_memory_block(0, self._address_space_size, readback_check)
 
     def write_block(self, block_name, readback_check: bool = True):
-        print("PYTHON PACKAGE: write_block method in Address_Space_Controller object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_block method in Address_Space_Controller object")
         if self._i2c_address is None:
             self._logger.error(f"Unable to write address space '{self._name}' because the i2c address is not set")
             return False
@@ -439,7 +447,8 @@ class Address_Space_Controller:
         return self.write_memory_block(base_address, block["Length"], readback_check, original_base_address)
 
     def write_register(self, block_name, register_name, readback_check: bool = True):
-        print("PYTHON PACKAGE: write_register method in Address_Space_Controller object")
+        # TODO: DEF SEEN
+        #print("PYTHON PACKAGE: write_register method in Address_Space_Controller object")
         self._logger.detailed_trace(f'Address_Space_Controller::write_register("{block_name}", "{register_name}", {readback_check})')
         if self._i2c_address is None:
             self._logger.error(f"Unable to write address space '{self._name}' because the i2c address is not set")

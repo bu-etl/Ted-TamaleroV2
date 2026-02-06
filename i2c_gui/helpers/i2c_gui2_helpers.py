@@ -10,10 +10,39 @@ import pandas as pd
 from pathlib import Path
 from tqdm import tqdm
 
+# --------------------------- NEW ----------------------------
+class LpGBT_I2C_Controller:
+    """
+    minimal object to satisfy i2c_gui2 Base_Chip expectations, while using rb.DAQ_LPGBT
+    down in Address_Space_Controller for actual I2C transactions instead of USB-ISS
+    """
+    def __init__(self, rb=None, lpgbt=None, connected=True):
+        self.rb = rb
+        self.lpgbt = lpgbt if lpgbt is not None else (rb.DAQ_LPGBT if rb is not None else None)
+        self._connected = connected
+        self._callbacks = []
+
+    def register_connection_callback(self, cb):
+        self._callbacks.append(cb)
+        # Immediately notify the current state so GUI/i2c_gui2 layers behave
+        cb(self._connected)
+
+    def set_connected(self, connected: bool):
+        self._connected = connected
+        for cb in self._callbacks:
+            cb(self._connected)
+
+    @property
+    def connected(self):
+        return self._connected
+# --------------------------- NEW END ------------------------
+
+
 class i2c_connection():
     _chips = None
 
-    def __init__(self, port, chip_addresses, ws_addresses, chip_names, clock = 100):
+    def __init__(self, port, chip_addresses, ws_addresses, chip_names, clock = 100, rb=None, lpgbt=None):
+        print("REPO: i2c_connection object instantiated")
         self.chip_addresses = chip_addresses
         self.ws_addresses = ws_addresses
         self.chip_names = chip_names
@@ -28,8 +57,22 @@ class i2c_connection():
         logging.basicConfig(format='%(asctime)s - %(levelname)s:%(name)s:%(message)s', stream=sys.stdout, force=True)
         logger = logging.getLogger("Script_Logger")
         self.chip_logger = logging.getLogger("Chip_Logger")
+        # --------------------------- NEW ----------------------------
+        '''
         self.conn = i2c_gui2.USB_ISS_Helper(port, clock, dummy_connect = False)
+        '''
+        if rb is not None:
+            self.rb = rb
+            self.lpgbt = lpgbt if lpgbt is not None else (rb.DAQ_LPGBT if rb is not None else None)
+            self.conn = LpGBT_I2C_Controller(rb=self.rb, lpgbt=self.lpgbt, connected=True)
+        else:
+            self.rb = None
+            self.lpgbt = None
+            self.conn = i2c_gui2.USB_ISS_Helper(port, clock, dummy_connect = False)
+
+        # --------------------------- NEW END ------------------------
         logger.setLevel(log_level)
+
 
         self.BL_df = {}
         for chip_address in chip_addresses:
@@ -59,10 +102,13 @@ class i2c_connection():
             if ( do_disable_and_calibration ):
                 self.disable_all_pixels(chip_address, chip)
                 self.auto_calibration(chip_address, chip_name, chip)
-            if( do_prepare_ws_testing ): self.prepare_ws_testing(chip_address, ws_address, chip)
+            if( do_prepare_ws_testing ): self.prepare_ws_testing(chip_address, ws_address, chip, self.rb, self.lpgbt)
 
     def __del__(self):
-        del self.conn
+        # --------------------------- NEW ----------------------------
+        if hasattr(self, "conn"):
+        # --------------------------- NEW END ------------------------
+            del self.conn
 
 
     #--------------------------------------------------------------------------#
