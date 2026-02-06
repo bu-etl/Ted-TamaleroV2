@@ -1,0 +1,6 @@
+__pycache__/
+venv/
+.venv/
+*venv*
+i2c_gui/venv*
+ETROC-figures/
