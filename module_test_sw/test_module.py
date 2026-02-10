@@ -445,7 +445,7 @@ def readout_tests(etroc, masked_pixels, rb_0, args, result_dir = None, out_dir =
     if args.show_plots:
         plt.show()
     plt.close()
-
+    '''
     fifo.reset()
     print("\n - Testing fast command communication - Sending two L1As")
     fifo.send_l1a(2)
@@ -532,10 +532,10 @@ def readout_tests(etroc, masked_pixels, rb_0, args, result_dir = None, out_dir =
         hit_matrix[{"row":sum}].show(columns=100)
         print("\nOccupancy vs row:")
         hit_matrix[{"col":sum}].show(columns=100)
-
+    '''
     # Set the chip back into well-defined workMode 0
     etroc.wr_reg("workMode", 0x0, broadcast=True)
-
+    
     tmp_temp = check_temp(etroc)
     temperatures.append((time.time(), tmp_temp))
     print('Current ETROC Temperature Reading:', tmp_temp)
@@ -955,7 +955,7 @@ if __name__ == '__main__':
     rb.connect_modules(moduleids=moduleids, hard_reset=True, ext_vref=args.external_vref)
     for mod in rb.modules:
         mod.show_status()
-
+    '''
     if args.reset_fifo:
         print("RESETTING FIFO")
         fifo = FIFO(rb)
@@ -981,7 +981,7 @@ if __name__ == '__main__':
         for x in fifo.pretty_read(df):
             print(x)
         print("Done")
-
+    '''
     end_time = time.time()
 
     print("KCU init done in     {:.2f}s".format(int_time-start_time))
