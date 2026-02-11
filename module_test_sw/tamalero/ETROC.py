@@ -545,7 +545,10 @@ class ETROC():
             self.wr_reg("lowerTOTTrig", 0, broadcast=True)
             self.wr_reg("upperCalTrig", 0x3ff, broadcast=True)
             self.wr_reg("lowerCalTrig", 0, broadcast=True)
-
+            
+            ## Set in high power mode (Bobby)
+            self.wr_reg("IBSel", 0, broadcast=True)
+            
             self.reset()  # soft reset of the global readout, 2nd reset needed for some ETROCs
             self.reset_fast_command()
             #
