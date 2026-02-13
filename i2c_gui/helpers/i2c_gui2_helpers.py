@@ -47,6 +47,7 @@ class LpGBT_I2C_Controller(i2c_gui2.i2c_connection_helper.I2C_Connection_Helper)
         address_bitlength: int = 8,
     ) -> list[int]:
         word_address = word_address << 8 | word_address >> 8
+        '''
         result = []
         for offset in range(byte_count):
             raw = self.lpgbt.I2C_read(
@@ -59,6 +60,20 @@ class LpGBT_I2C_Controller(i2c_gui2.i2c_connection_helper.I2C_Connection_Helper)
             )
             result.append(raw)
         return result
+        '''
+        result = self.lpgbt.I2C_read(
+                reg=word_address,
+                slave_addr=device_address,
+                nbytes=byte_count,  # Read one byte at a time
+                adr_nbytes=2,
+                master=1,
+                freq=2,
+        )
+        if byte_count == 1:
+            return [result]
+        else:
+            return result
+
 
     def _write_i2c_device_memory(
         self,
@@ -69,6 +84,7 @@ class LpGBT_I2C_Controller(i2c_gui2.i2c_connection_helper.I2C_Connection_Helper)
         address_bitlength: int = 8,
     ):        
         word_address = word_address << 8 | word_address >> 8
+        '''
         for i, byte in enumerate(byte_data):
             self.lpgbt.I2C_write(
                 reg=word_address+i,
@@ -78,6 +94,15 @@ class LpGBT_I2C_Controller(i2c_gui2.i2c_connection_helper.I2C_Connection_Helper)
                 master=1,
                 freq=2,
             )
+        '''
+        self.lpgbt.I2C_write(
+            reg=word_address,
+            val=byte_data,
+            slave_addr=device_address,
+            adr_nbytes=2,
+            master=1,
+            freq=2,
+        )
 
 # --------------------------- NEW END ------------------------
 
