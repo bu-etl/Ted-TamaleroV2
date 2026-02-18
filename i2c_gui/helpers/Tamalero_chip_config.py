@@ -17,7 +17,9 @@ def dcardSW(rb=None):
     # 'The port name the USB-ISS module is connected to. Default: /dev/ttyACM0'
     port = "/dev/ttyACM1"
     #chip_addresses = [0x60, 0x61, 0x62, 0x63]
-    chip_addresses = [0x70]
+    #chip_addresses = [0x73] # RBF3 & Module
+    chip_addresses = [0x70] # RBF3 & D-card
+
     ws_addresses = [None] * len(chip_addresses)
     
     i2c_conn = helpers.i2c_connection(port,chip_addresses,ws_addresses,chip_names, rb=rb)

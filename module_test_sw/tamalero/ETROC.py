@@ -781,6 +781,10 @@ class ETROC():
         from tqdm import tqdm
         baseline = np.empty([16, 16])
         noise_width = np.empty([16, 16])
+
+        print(f"VRefGen_PD: {self.rd_reg('VRefGen_PD')}")
+        print(f"VRefGen_PD: {self.rd_reg('VRefGen_PD')}")
+        print(f"VRefGen_PD: {self.rd_reg('VRefGen_PD')}")
         print("Running threshold scan")
         with tqdm(total=256, bar_format='{l_bar}{bar:20}{r_bar}{bar:-20b}') as pbar:
             for pixel in range(256):
