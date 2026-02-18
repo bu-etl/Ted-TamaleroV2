@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 from tqdm import tqdm
 import sys
-sys.path.append("/home/etl/Test_Stand/Ted-TamaleroV2/module_test_sw")
+sys.path.append("/home/naomi/repos/ted_original/module_test_sw")
 from tamalero.ReadoutBoard import ReadoutBoard
 from tamalero import utils
 import time
@@ -18,7 +18,7 @@ def dcardSW(rb=None):
     port = "/dev/ttyACM1"
     #chip_addresses = [0x60, 0x61, 0x62, 0x63]
     #chip_addresses = [0x73] # RBF3 & Module
-    chip_addresses = [0x73] # RBF3 & D-card
+    chip_addresses = [0x70] # RBF3 & D-card
 
     ws_addresses = [None] * len(chip_addresses)
     
@@ -35,6 +35,20 @@ def dcardSW(rb=None):
         print(f"{reg_name:9s} = 0x{val:02x}")
     '''
 
+    '''
+    # Uncomment this out to test the read & write functions
+    chip = i2c_conn.get_chip_i2c_connection(0x70)
+    for i in range(50):
+        chip.set_decoded_value("ETROC2", "Pixel Config", "upperTOT", 0x1ff)
+        chip.write_decoded_value("ETROC2", "Pixel Config", "upperTOT")
+        chip.read_decoded_value("ETROC2", "Pixel Config", "upperTOT")
+        val = chip.get_decoded_value("ETROC2", "Pixel Config", "upperTOT")
+        chip.set_decoded_value("ETROC2", "Pixel Config", "upperTOT", 0)
+        chip.write_decoded_value("ETROC2", "Pixel Config", "upperTOT")
+        chip.read_decoded_value("ETROC2", "Pixel Config", "upperTOT")
+        val2 = chip.get_decoded_value("ETROC2", "Pixel Config", "upperTOT")
+        print(f"Before: {val}, After: {val2}")
+    '''
     print('PLL and FC calibration')
     # Calibrate PLL
     for chip_address in chip_addresses[:]:
