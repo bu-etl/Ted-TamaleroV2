@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 from tqdm import tqdm
 import sys
-sys.path.append("/home/naomi/repos/ted_original/module_test_sw")
+sys.path.append("/home/etl/Test_Stand/Ted-TamaleroV2/module_test_sw")
 from tamalero.ReadoutBoard import ReadoutBoard
 from tamalero import utils
 import time
@@ -18,7 +18,7 @@ def dcardSW(rb=None):
     port = "/dev/ttyACM1"
     #chip_addresses = [0x60, 0x61, 0x62, 0x63]
     #chip_addresses = [0x73] # RBF3 & Module
-    chip_addresses = [0x70] # RBF3 & D-card
+    chip_addresses = [0x73] # RBF3 & D-card
 
     ws_addresses = [None] * len(chip_addresses)
     
@@ -65,7 +65,7 @@ def main():
     ap.add_argument("--config", default="modulev2", help="ReadoutBoard + Module version config") 
     ap.add_argument("--module", type = int, default = 1, help = 'Which module slot to use on RB')
     ap.add_argument("--moduleid", type = int, default = 40021, help = 'Serial number of module being used')
-
+    ap.add_argument("--hv_pause", action="store_true", help="Request input after powering on etroc to supply HV. ")
     args = ap.parse_args()
 
     kcu = utils.get_kcu(args.kcu, verbose=True)
@@ -92,7 +92,9 @@ def main():
     )
     rb.select_module(args.module - 1)
     time.sleep(0.05)
-
+    if args.hv_pause:
+        input("Turn on HV! just press enter or CNTRL-C :) ")
+    
     dcardSW(rb=rb)
 
     return kcu, rb, args
