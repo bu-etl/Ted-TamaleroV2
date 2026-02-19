@@ -3,13 +3,13 @@ import datetime
 import numpy as np
 from tqdm import tqdm
 import sys
-sys.path.append("/home/naomi/repos/ted_original/module_test_sw")
+sys.path.append("../module_test_sw")
 from tamalero.ReadoutBoard import ReadoutBoard
 from tamalero import utils
 import time
 import argparse
 
-def dcardSW(rb=None):
+def dcardSW(rb=None, chip_addr=0x73):
     chip_names = ["ET2p03_Bare19", "ET2p03_Bare20", "ET2p03_Bare21", "ET2p03_Bare22"]
     # chip_names = ["ET2p01_IME_5"]
     
@@ -17,8 +17,8 @@ def dcardSW(rb=None):
     # 'The port name the USB-ISS module is connected to. Default: /dev/ttyACM0'
     port = "/dev/ttyACM1"
     #chip_addresses = [0x60, 0x61, 0x62, 0x63]
-    #chip_addresses = [0x73] # RBF3 & Module
-    chip_addresses = [0x70] # RBF3 & D-card
+    chip_addresses = [chip_addr] # RBF3 & Module 0x73 slot 1
+    #chip_addresses = [0x70] # RBF3 & D-card
 
     ws_addresses = [None] * len(chip_addresses)
     
@@ -72,6 +72,11 @@ def dcardSW(rb=None):
     now = datetime.datetime.now().isoformat(sep=' ', timespec='seconds')
     i2c_conn.save_baselines(hist_dir='./RESULTS/', save_notes=f'{now}')
 
+    for df in i2c_conn.BL_df.values():
+        print("BL, NW")
+        for b, n in zip(df["baseline"], df["noise_width"]):
+            print(b, n)
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kcu", default="192.168.0.10", help="KCU IP/hostname")
@@ -80,6 +85,8 @@ def main():
     ap.add_argument("--module", type = int, default = 1, help = 'Which module slot to use on RB')
     ap.add_argument("--moduleid", type = int, default = 40021, help = 'Serial number of module being used')
     ap.add_argument("--hv_pause", action="store_true", help="Request input after powering on etroc to supply HV. ")
+    ap.add_argument("--chip_addr", type=str, default="0x73",help="Request input after powering on etroc to supply HV. ")
+
     args = ap.parse_args()
 
     kcu = utils.get_kcu(args.kcu, verbose=True)
@@ -109,7 +116,7 @@ def main():
     if args.hv_pause:
         input("Turn on HV! just press enter or CNTRL-C :) ")
     
-    dcardSW(rb=rb)
+    dcardSW(rb=rb, chip_addr=int(args.chip_addr, 0))
 
     return kcu, rb, args
 
