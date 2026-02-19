@@ -22,8 +22,20 @@ def main():
     	)
 
     combined_mean = np.mean(means)
-    combined_varience : float = ( (pixels-1)*(sum(stds)**2)+ ((pixels**n) /(pixels *n))*( (means[0] - sum(means[1:])) ** 2 ) )   /   ( (pixels * n) - 1 )
+
+    sub_mean2 = np.array([x-combined_mean for x in means]) ** 2
+    sqr_stds = np.array(stds) ** 2
+    combined_varience : float = ( (pixels-1)/(pixels*n - 1) )*sum(sqr_stds)  +  ( pixels/(pixels*n - 1) )* sum(sub_mean2)
+
     combined_std : float = combined_varience ** 0.5
+    
+    sample_std : float = np.mean(stds)
+
+    print(
+    	f"Combined mean: {combined_mean}\n"
+    	f"Combined stds: {combined_std}\n"
+    	f"Sample stds: {sample_std}\n"
+    )
 
 if __name__ == "__main__":
     main()
