@@ -13,7 +13,7 @@ parser.add_argument('--chip_addr', type=str, default="0x73", help='Chip address 
 parser.add_argument('--rbf_channel', type=str, default="CH1", help='RBF Channel (default: CH1)')
 parser.add_argument('--lv_ip', type=str, default="192.168.1.41", help='LV Power Supply IP (default: 192.168.1.41)')
 parser.add_argument('--vref_ip', type=str, default=None, help='VREF Power Supply IP')
-parser.add_argument('-n', '--n_iterations', type=int, default=50, help='Number of iterations (default: 50)')
+parser.add_argument('-n', '--num', type=int, default=50, help='Number of iterations (default: 50)')
 parser.add_argument('--wait', type=int, default=5, help='Wait time in seconds (default: 5)')
 args = parser.parse_args()
 
@@ -24,22 +24,31 @@ if args.hv:
 
 run_tag = args.run_tag
 base_dir = Path('ETROC-figures/stuck_tests/') / run_tag
-outdir = base_dir / 'Tamalero_chip_config'
+outdir = base_dir / 'chip_config'
 outdir_time = base_dir / 'time'
 outdir.mkdir(parents=True, exist_ok=True)
 outdir_time.mkdir(parents=True, exist_ok=True)
-
+'''
 if args.vref_ip:
     D1_VREF2 = PowerSupply('name', args.vref_ip)
 RB_LV = PowerSupply('name', args.lv_ip)
+'''
 
-for i in tqdm(range(args.n_iterations)):
+ps = PowerSupply('name', '192.168.2.4')
+
+
+for i in tqdm(range(args.num)):
+    '''
     if args.vref_ip:
         D1_VREF2.power_up("CH1")
         time.sleep(1)
         D1_VREF2.power_up("CH2")
         time.sleep(1)
     RB_LV.power_up(args.rbf_channel)
+    '''
+    ps.power_up("CH1")
+    time.sleep(1)
+    ps.power_up("CH2")
     time.sleep(1)
     if args.hv:
         caen.set_channel_on()
@@ -58,20 +67,25 @@ for i in tqdm(range(args.n_iterations)):
     rel_outdir_time = Path('..') / outdir_time
 
     start_time = time.perf_counter()
-    os.system(f'{sys.executable} -m helpers.Tamalero_chip_config --chip_addr {args.chip_addr} > "{rel_outdir}/output_{i}.txt" 2> "{rel_outdir}/errors_{i}.txt"')
+    os.system(f'{sys.executable} -m helpers.chip_config.py > "{rel_outdir}/output_{i}.txt" 2> "{rel_outdir}/errors_{i}.txt"')
     end_time = time.perf_counter()
-    elapsed_time = end_time - start_time - 37.0 # 37s is the time I measured for Tamalero_chip_config to get to the row calibration. Not exact, but close enough to notice differences
+    elapsed_time = end_time - start_time # 37s is the time I measured for Tamalero_chip_config to get to the row calibration. Not exact, but close enough to notice differences
     os.system(f"echo 'time: {elapsed_time}' > \"{rel_outdir_time}/time_{i}.txt\" ")
     os.chdir("..")
     if args.hv:
         caen.set_channel_off()
         caen.wait_ramp(False, 1)
     time.sleep(1)
+    '''
     if args.vref_ip:
         D1_VREF2.power_down("CH1")
         time.sleep(1)
         D1_VREF2.power_down("CH2")
         time.sleep(1)
     RB_LV.power_down(args.rbf_channel)
+    '''
+    ps.power_down("CH1")
+    time.sleep(1)
+    ps.power_down("CH2")
     time.sleep(args.wait)
     
