@@ -116,7 +116,14 @@ def main():
     if args.hv_pause:
         input("Turn on HV! just press enter or CNTRL-C :) ")
     
+    temp = rb.MUX64.read_adc(self.vtemp, calibrate=False if mode=='bits' else True)
+    print(f"BEFORE VTEMP RAW ADC: {temp}\n")
+
     dcardSW(rb=rb, chip_addr=int(args.chip_addr, 0))
+
+    temp = rb.MUX64.read_adc(self.vtemp, calibrate=False if mode=='bits' else True)
+    print(f"AFTER VTEMP RAW ADC: {temp}\n")
+
 
     return kcu, rb, args
 
