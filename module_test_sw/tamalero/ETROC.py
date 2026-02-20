@@ -398,6 +398,10 @@ class ETROC():
 
     def reset_modules(self):
         self.reset(hard=True)
+        #---new---
+        # reset power sequencer controller. resets globalController to init state (bobby)
+        #self.reset_Power()
+        #---new end---
         # reset PLL and FC modules
         self.reset_PLL()
         self.reset_fast_command()
@@ -546,7 +550,7 @@ class ETROC():
             self.wr_reg("upperCalTrig", 0x3ff, broadcast=True)
             self.wr_reg("lowerCalTrig", 0, broadcast=True)
             
-            ## Set in high power mode (Bobby)
+            ## Set in high power mode (bobby)
             self.wr_reg("IBSel", 0, broadcast=True)
             
             self.reset()  # soft reset of the global readout, 2nd reset needed for some ETROCs
@@ -1764,6 +1768,10 @@ class ETROC():
     # Reset power sequencer controller, active high
     def reset_Power(self):
         self.wr_reg('softBoot', 1)
+        #---new---
+        # I think this should be a pulse? (bobby)
+        self.wr_reg('softBoot', 0)
+        #---new end---
 
     # The register controlling the SCLK pulse width, ranging ranges from 3 us to 10 us with step of 0.5 us.
     # The default value is 4 corresponding to 5 us pulse width. Debugging use only.
