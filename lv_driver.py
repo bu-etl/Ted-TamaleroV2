@@ -17,7 +17,7 @@ class PowerSupply:
                  name,
                  ip,
                  port=5025,
-                 timeout=1,
+                 timeout=5,
                  ):
 
         self.name   = name

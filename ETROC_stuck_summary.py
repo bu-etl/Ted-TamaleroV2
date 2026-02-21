@@ -1,8 +1,8 @@
 import os
 from tqdm import tqdm
 
-outdir = '/home/bobby/repos/ETROC-TamaleroV2/ETROC-figures/stuck_tests/quick_test/chip_config'
-N = 2
+outdir = '/home/bobby/repos/ETROC-TamaleroV2/ETROC-figures/stuck_tests/D20_N100_B0V/chip_config'
+N = 100
 
 fail_cntr = 0
 os.makedirs(outdir, exist_ok = True)
