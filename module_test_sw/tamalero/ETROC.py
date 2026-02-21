@@ -1772,8 +1772,8 @@ class ETROC():
         self.wr_reg('softBoot', 1)
         #---new---
         # I think this should be a pulse? (bobby)
-        time.sleep(0.01)
         self.wr_reg('softBoot', 0)
+        time.sleep(.1)
         #---new end---
 
     # The register controlling the SCLK pulse width, ranging ranges from 3 us to 10 us with step of 0.5 us.
